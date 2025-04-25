@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./Login.css";
 import { auth } from "../../api/auth";
 import { setLoading } from "../../redux/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -14,6 +15,7 @@ const Login = () => {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { loading, isAuthenticated } = useSelector((state) => state.auth);
   const authenticatedUser = useSelector((state) => state.auth);
