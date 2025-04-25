@@ -1,6 +1,6 @@
 import Dashboard from "../components/Dashboard/Dashboard";
 import Login from "../components/Auth/Login";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export const AppRoutes = () => {
@@ -9,7 +9,10 @@ export const AppRoutes = () => {
   return (
     <Routes>
       {isAuthenticated ? (
-        <Route path="/admin" element={<Dashboard />}></Route>
+        <>
+          <Route path="/admin/*" element={<Dashboard />} />
+          <Route path="*" element={<Navigate to="/admin" replace/>}></Route>
+        </>
       ) : (
         <Route path="/" element={<Login />}></Route>
       )}

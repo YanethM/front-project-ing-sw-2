@@ -1,9 +1,9 @@
 import { Typography } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./Login.css";
 import { auth } from "../../api/auth";
-import { setLoading } from "../../redux/authSlice";
+import { setAutheticated, setLoading } from "../../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
@@ -16,13 +16,17 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { loading, isAuthenticated } = useSelector((state) => state.auth);
-  const authenticatedUser = useSelector((state) => state.auth);
-  console.log(authenticatedUser);
   const [errors, setErrors] = useState({});
   const [loginError, setLoginError] = useState(null);
-  console.log(`Is authenticated: ${isAuthenticated}`);
+
+  // Verificar si el user esta autenticado y redireccionar
+  // El useEffect se ejecuta cada vez que el valor de isAuthenticated cambia
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/admin");
+    }
+  }, [isAuthenticated, navigate]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -52,17 +56,17 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoginError(null);
-
     if (!validateForm()) {
       return;
     }
-
     dispatch(setLoading(true));
     try {
       const response = await auth.signIn(formData);
       console.log(response);
+      dispatch(setAutheticated(true));
     } catch (error) {
       setLoginError("Invalid email or password");
+      dispatch(setLoading(false));
     }
   };
 
