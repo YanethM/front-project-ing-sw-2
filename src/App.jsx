@@ -1,5 +1,4 @@
 import { AppRoutes as RoutesComponent } from "./routes/AppRoutes";
-import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
